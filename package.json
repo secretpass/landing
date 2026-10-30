@@ -5,13 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@heroui/react": "^3.2.5",
     "@heroui/styles": "^3.2.5",
+    "@opennextjs/cloudflare": "^1.20.15",
     "@tabler/icons-react": "^3.46.0",
     "next": "16.3.5",
     "posthog-js": "^1.438.9",
@@ -27,7 +31,8 @@
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^6",
+    "wrangler": "^4.156.0"
   },
   "packageManager": "bun@1.4.2",
   "ignoreScripts": [
