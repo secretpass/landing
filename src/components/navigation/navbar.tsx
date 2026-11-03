@@ -74,17 +74,15 @@ export function Navbar() {
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
             <Dropdown>
-              <Dropdown.Trigger>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="mr-4"
-                  isIconOnly
-                  aria-label="Toggle menu"
-                >
-                  <IconMenu2 className="h-6 w-6" />
-                </Button>
-              </Dropdown.Trigger>
+              <Button
+                type="button"
+                variant="ghost"
+                className="mr-4"
+                isIconOnly
+                aria-label="Toggle menu"
+              >
+                <IconMenu2 className="h-6 w-6" />
+              </Button>
               <Dropdown.Popover className="w-sm">
                 <Dropdown.Menu>
                   <DropdownItem
