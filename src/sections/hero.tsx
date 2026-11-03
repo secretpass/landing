@@ -49,18 +49,26 @@ export function HeroSection() {
           service.
         </p>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <Link href="https://cloud.secretpass.cloud">
+          <Link
+            href="https://cloud.secretpass.cloud"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button size="lg">
               <IconCloudFilled className="size-5" />
-              Go to cloud
+              Go Cloud
               <IconArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
 
-          <Link href="https://cloud.secretpass.cloud">
+          <Link
+            href="https://local.secretpass.cloud"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button size="lg">
               <IconDeviceLaptop className="size-5" />
-              Go to local
+              Go Local
               <IconArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>

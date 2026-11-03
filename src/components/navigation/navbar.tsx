@@ -45,15 +45,9 @@ export function Navbar() {
               <ThemeToggle />
               <Dropdown>
                 <Dropdown.Trigger>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="mr-4"
-                    isIconOnly
-                    aria-label="Toggle menu"
-                  >
+                  <span className="mr-4 button button--icon-only button-md button--ghost">
                     <IconMenu2 className="h-6 w-6" />
-                  </Button>
+                  </span>
                 </Dropdown.Trigger>
                 <Dropdown.Popover className="w-sm">
                   <Dropdown.Menu>
