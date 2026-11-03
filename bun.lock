@@ -9,6 +9,7 @@
         "@heroui/styles": "^3.2.5",
         "@opennextjs/cloudflare": "^1.20.15",
         "@tabler/icons-react": "^3.46.0",
+        "clsx": "^2.1.1",
         "next": "16.3.5",
         "posthog-js": "^1.438.9",
         "react": "19.2.8",

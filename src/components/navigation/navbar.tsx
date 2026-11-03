@@ -2,30 +2,25 @@
 
 import {
   Button,
-  Description,
   Dropdown,
+  Header,
   IconChevronDown,
-  Label,
-  Popover,
+  Separator,
 } from "@heroui/react";
 import {
   IconCloudFilled,
-  IconExternalLink,
-  IconMenu,
-  IconX,
+  IconDeviceLaptop,
+  IconHomeFilled,
+  IconMenu2,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { type ReactNode, useState } from "react";
-import { useAnalytics } from "@/analytics";
+import type { ReactNode } from "react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { COMMUNITY_LINKS, type LinkItemProps } from "@/constants/links";
 import { Logo } from "../brand";
+import { DropdownItem, type DropdownItemProps } from "../dropdown";
+import { COMMUNITY_LINKS, RESOURCES_LINKS } from "./links";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-
   return (
     <nav className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <header className="container mx-auto">
@@ -33,8 +28,8 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-2">
             <Logo className="size-7" />
             <span className="text-2xl font-bold">Secretpass</span>
-            <span className="text-2xl font-bold text-muted">Cloud</span>
-            <IconCloudFilled className="size-7 text-muted" />
+            <span className="text-2xl font-bold text-muted">Home</span>
+            <IconHomeFilled className="size-7 text-muted" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-2">
@@ -42,124 +37,106 @@ export function Navbar() {
               <Button variant="ghost">Features</Button>
             </Link>
             <LinkDropDown items={COMMUNITY_LINKS} label="Community" />
+            <LinkDropDown items={RESOURCES_LINKS} label="Resources" />
             <Link href="#faq">
               <Button variant="ghost">FAQ</Button>
             </Link>
-            <DocsLink capture="pre-launch-nav-docs-click" />
-            <div className="flex items-center gap-4 border-l pl-4">
+            <div className="flex items-center gap-2 border-l pl-4">
               <ThemeToggle />
-              <SignInButton capture="pre-launch-nav-login-click" />
+              <Dropdown>
+                <Dropdown.Trigger>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="mr-4"
+                    isIconOnly
+                    aria-label="Toggle menu"
+                  >
+                    <IconMenu2 className="h-6 w-6" />
+                  </Button>
+                </Dropdown.Trigger>
+                <Dropdown.Popover className="w-sm">
+                  <Dropdown.Menu>
+                    <DropdownItem
+                      is_external
+                      href="https://cloud.secretpass.cloud"
+                      Icon={IconCloudFilled}
+                      label="Cloud"
+                      capture="local-to-cloud-interest"
+                    />
+                    <DropdownItem
+                      is_external
+                      href="https://local.secretpass.cloud"
+                      Icon={IconDeviceLaptop}
+                      label="Local"
+                      capture="cloud-to-local-interest"
+                    />
+                  </Dropdown.Menu>
+                </Dropdown.Popover>
+              </Dropdown>
             </div>
           </nav>
 
-          <div className="flex items-center gap-4 md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
-            <button type="button" onClick={toggleMenu} aria-label="Toggle menu">
-              {isOpen ? (
-                <IconX className="h-6 w-6" />
-              ) : (
-                <IconMenu className="h-6 w-6" />
-              )}
-            </button>
+            <Dropdown>
+              <Dropdown.Trigger>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="mr-4"
+                  isIconOnly
+                  aria-label="Toggle menu"
+                >
+                  <IconMenu2 className="h-6 w-6" />
+                </Button>
+              </Dropdown.Trigger>
+              <Dropdown.Popover className="w-sm">
+                <Dropdown.Menu>
+                  <DropdownItem
+                    is_external
+                    href="https://cloud.secretpass.cloud"
+                    Icon={IconCloudFilled}
+                    label="Cloud"
+                    capture="local-to-cloud-interest"
+                  />
+                  <DropdownItem
+                    is_external
+                    href="https://local.secretpass.cloud"
+                    Icon={IconDeviceLaptop}
+                    label="Local"
+                    capture="cloud-to-local-interest"
+                  />
+                  <Separator />
+                  <Dropdown.Section>
+                    <Header>Community</Header>
+                    {COMMUNITY_LINKS.map((item) => (
+                      <DropdownItem key={item.href} {...item} />
+                    ))}
+                  </Dropdown.Section>
+                  <Dropdown.Section>
+                    <Header>Resources</Header>
+                    {RESOURCES_LINKS.map((item) => (
+                      <DropdownItem key={item.href} {...item} />
+                    ))}
+                  </Dropdown.Section>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
+            </Dropdown>
           </div>
         </div>
-
-        {isOpen && (
-          <div className="md:hidden border-t px-4 bg-background">
-            <div className="container py-4 flex flex-col gap-4">
-              <Link href="#features" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" onClick={() => setIsOpen(false)}>
-                  Features
-                </Button>
-              </Link>
-              <LinkDropDown
-                items={COMMUNITY_LINKS}
-                onClick={() => setIsOpen(false)}
-                label="Community"
-              />
-              <Link href="#faq" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" onClick={() => setIsOpen(false)}>
-                  FAQ
-                </Button>
-              </Link>
-              <DocsLink
-                capture="pre-launch-nav-docs-mobile-click"
-                onClick={() => setIsOpen(false)}
-              />
-              <div className="border-t pt-4">
-                <SignInButton capture="pre-launch-nav-login-mobile-click" />
-              </div>
-            </div>
-          </div>
-        )}
       </header>
     </nav>
-  );
-}
-
-function SignInButton({ capture }: { capture: string }) {
-  const analytics = useAnalytics();
-  return (
-    <Popover>
-      <Button
-        className="w-full md:w-auto"
-        onClick={() => analytics?.capture(capture)}
-      >
-        Sign In
-      </Button>
-      <Popover.Content className="px-4 py-6 max-w-sm flex flex-col items-start">
-        <Label>Work in progress</Label>
-        <Description>
-          Meanwhile, please check our local offering below. Check our community
-          channels for help and updates.
-        </Description>
-      </Popover.Content>
-    </Popover>
-  );
-}
-
-function DocsLink({
-  capture,
-  onClick,
-}: {
-  capture: string;
-  onClick?: () => void;
-}) {
-  const analytics = useAnalytics();
-  return (
-    <Popover>
-      <Button
-        size="lg"
-        variant="ghost"
-        onClick={() => {
-          analytics?.capture(capture);
-          onClick?.();
-        }}
-      >
-        Docs
-      </Button>
-      <Popover.Content className="px-4 py-6 max-w-sm flex flex-col">
-        <Label>Work in progress</Label>
-        <Description>
-          Please check how to get started below. In case you get stuck or have
-          any questions, use the chat button here or on the app. Also check our
-          community channels for updates and support from fellow users.
-        </Description>
-      </Popover.Content>
-    </Popover>
   );
 }
 
 function LinkDropDown({
   items,
   label,
-  onClick,
 }: {
-  items: LinkItemProps[];
+  items: DropdownItemProps[];
   label: ReactNode;
-  onClick?: () => void;
 }) {
-  const analytics = useAnalytics();
   return (
     <Dropdown>
       <Dropdown.Trigger>
@@ -171,22 +148,7 @@ function LinkDropDown({
       <Dropdown.Popover>
         <Dropdown.Menu>
           {items.map((item) => (
-            <Dropdown.Item
-              onClick={() => {
-                onClick?.();
-                if (item.capture) {
-                  analytics?.capture(item.capture);
-                }
-              }}
-              className="flex items-center gap-2"
-              key={item.href}
-              href={item.href}
-              target="_blank"
-            >
-              <item.Icon className="size-5" />
-              <span className="grow">{item.label}</span>
-              <IconExternalLink className="size-4" />
-            </Dropdown.Item>
+            <DropdownItem key={item.href} {...item} />
           ))}
         </Dropdown.Menu>
       </Dropdown.Popover>

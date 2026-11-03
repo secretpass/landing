@@ -4,7 +4,7 @@ type RouteContext = {
   params: Promise<{ network: string }>;
 };
 
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   const { network } = await context.params;
 
   switch (network) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     case "discord":
       return NextResponse.redirect("https://discord.gg/CAb6GzfFdS");
     case "github":
-      return NextResponse.redirect("https://github.com/secretpass/core");
+      return NextResponse.redirect("https://github.com/secretpass");
   }
 
   // Redirect to home if the social network is unknown

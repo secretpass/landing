@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import ThemeProvider from "@/components/shared/theme-provider";
 import "./globals.css";
-import Script from "next/script";
 import { AnalyticsProvider } from "@/analytics/provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -25,10 +24,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         <title>Secretpass · Cloud</title>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased flex flex-col min-h-screen`}
+        className={`${inter.variable} ${geistMono.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <AnalyticsProvider>
           <ThemeProvider>{children}</ThemeProvider>

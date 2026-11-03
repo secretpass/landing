@@ -1,20 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Description,
-  Label,
-  Tabs,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@heroui/react";
-import {
-  IconBrandDocker,
-  IconBrandPowershell,
-  IconTerminal,
-} from "@tabler/icons-react";
+import { Card, CardContent, Description, Label, Tabs } from "@heroui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CodeHighlighter } from "@/components/shared";
 import { CodeLanguage, CodeLanguageIcon } from "@/constants";
@@ -25,24 +11,23 @@ interface AccessSample {
   command: string;
 }
 
-const COMMON_INSTRUCTIONS = `# Start secret manager - launches a web UI to manage secrets
-spass  # --help if you need it
+const UNIX_INSTRUCTIONS = `# Official Installer
+curl -LsSf https://github.com/secretpass/cli/releases/download/${process.env.NEXT_APP_VERSION}/secretpass-cli-installer.sh | sh
+# Or Use brew
+brew install secretpass/tap/secretpass-cli
+
+# Start local service - not needed for cloud.secretpass.cloud
+spass local start
 
 # HUMANS: Run a command with secrets injected decrypted through your passkey
-# You can start multiple commands and processes from the management UI
-spass --env staging -- {{COMMAND}}
+# A browser tab will be opened allowing you to authorize the operation
+spass local run -- {{COMMAND}}
+spass cloud run -- {{COMMAND}}
 
 # CI, CODE, AGENTS e.t.c: Run a command using a generated private key
-spass --private-key="key generated from manager" --env staging -- {{COMMAND}}`;
-
-const UNIX_INSTRUCTIONS = `# Official Installer
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/secretpass/core/releases/download/0.1.0-prerelease.2/secretpass-cli-installer.sh | sh
-
-${COMMON_INSTRUCTIONS}`;
-const WINDOWS_INSTRUCTIONS = `# Official Installer
-powershell -ExecutionPolicy Bypass -c "irm https://github.com/secretpass/core/releases/download/0.1.0-prerelease.2/secretpass-cli-installer.ps1 | iex"
-
-${COMMON_INSTRUCTIONS}`;
+spass local run --private-key="key generated from manager" --env staging -- {{COMMAND}}
+spass cloud run --private-key="key generated from manager" --env staging -- {{COMMAND}}
+`;
 
 const ACCESS_SAMPLES: AccessSample[] = [
   {
@@ -124,7 +109,6 @@ export function QuickStartDemo() {
     play: true,
     speed: 2,
   });
-  const [run_mode, setRunMode] = useState<"unix" | "windows">("unix");
 
   const ref = useRef<HTMLVideoElement | null>(null);
   const sample = useMemo(
@@ -135,12 +119,8 @@ export function QuickStartDemo() {
   );
 
   const setup = useMemo(
-    () =>
-      (run_mode === "unix"
-        ? UNIX_INSTRUCTIONS
-        : WINDOWS_INSTRUCTIONS
-      ).replaceAll("{{COMMAND}}", sample.command),
-    [sample, run_mode],
+    () => UNIX_INSTRUCTIONS.replaceAll("{{COMMAND}}", sample.command),
+    [sample.command],
   );
 
   useEffect(() => {
@@ -206,41 +186,11 @@ export function QuickStartDemo() {
                   Let secretpass do the heavy lifting
                 </Description>
               </div>
-
-              <Tabs
-                selectedKey={run_mode}
-                onSelectionChange={(key) =>
-                  setRunMode(key as "unix" | "windows")
-                }
-              >
-                <Tabs.ListContainer>
-                  <Tabs.List>
-                    <Tabs.Tab
-                      id="unix"
-                      className="whitespace-nowrap h-auto py-0.5"
-                    >
-                      <IconTerminal className="h-5 w-auto gap-2" />
-                      MacOS & Linux
-                      <Tabs.Indicator />
-                    </Tabs.Tab>
-
-                    <Tabs.Tab id="windows" className="h-auto py-0.5 gap-2">
-                      <IconBrandPowershell className="h-5 w-auto" />
-                      Windows
-                      <Tabs.Indicator />
-                    </Tabs.Tab>
-                  </Tabs.List>
-                </Tabs.ListContainer>
-              </Tabs>
             </div>
             <CodeHighlighter
               className="grow"
               code={setup}
-              language={
-                run_mode === "unix"
-                  ? CodeLanguage.Shell
-                  : CodeLanguage.Powershell
-              }
+              language={CodeLanguage.Shell}
             />
           </div>
 

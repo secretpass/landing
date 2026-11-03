@@ -6,60 +6,60 @@ import {
   IconBrandMedium,
   IconBrandReddit,
   IconBrandSlack,
-  type TablerIcon,
 } from "@tabler/icons-react";
+import type { DropdownItemProps } from "../dropdown";
 
-export interface LinkItemProps {
-  label: string;
-  Icon: TablerIcon;
-  href: string;
-  capture: string;
-}
-
-export const COMMUNITY_LINKS: LinkItemProps[] = [
+export const COMMUNITY_LINKS: DropdownItemProps[] = [
   {
     label: "Slack",
     Icon: IconBrandSlack,
-    href: "/l/s/slack",
+    href: "https://secretpass.cloud/l/s/slack",
     capture: "social-interest-slack",
+    is_external: true,
   },
   {
     label: "Github",
     Icon: IconBrandGithub,
-    href: "/l/s/github",
+    href: "https://secretpass.cloud/l/s/github",
     capture: "social-interest-github",
+    is_external: true,
   },
   {
     label: "Reddit",
     Icon: IconBrandReddit,
-    href: "/l/s/reddit",
+    href: "https://secretpass.cloud/l/s/reddit",
     capture: "social-interest-reddit",
+    is_external: true,
   },
   {
     label: "Discord",
     Icon: IconBrandDiscord,
-    href: "/l/s/discord",
+    href: "https://secretpass.cloud/l/s/discord",
     capture: "social-interest-discord",
+    is_external: true,
   },
 ];
 
-export const RESOURCES_LINKS: LinkItemProps[] = [
+export const RESOURCES_LINKS: DropdownItemProps[] = [
   {
     label: "Docs",
     Icon: IconBook2,
-    href: "/l/docs",
+    href: "https://secretpass.cloud/l/docs",
     capture: "resource-interest-docs",
+    is_external: true,
   },
   {
     label: "Blog",
     Icon: IconBrandMedium,
-    href: "/l/blog",
+    href: "https://secretpass.cloud/l/blog",
     capture: "resource-interest-blog",
+    is_external: true,
   },
   {
     label: "Knowledge Base",
     Icon: IconBook,
-    href: "/l/kb",
+    href: "https://secretpass.cloud/l/kb",
     capture: "resource-interest-kb",
+    is_external: true,
   },
 ];
