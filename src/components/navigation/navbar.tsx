@@ -28,8 +28,8 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-2">
             <Logo className="size-7" />
             <span className="text-2xl font-bold">Secretpass</span>
-            <span className="text-2xl font-bold text-muted">Home</span>
-            <IconHomeFilled className="size-7 text-muted" />
+            <span className="text-2xl font-bold text-accent">Home</span>
+            <IconHomeFilled className="size-7 text-accent" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-2">

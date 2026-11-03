@@ -2,7 +2,6 @@ import { Dropdown } from "@heroui/react";
 import { IconExternalLink, type TablerIcon } from "@tabler/icons-react";
 import clsx from "clsx";
 import type { MouseEventHandler } from "react";
-import { useAnalytics } from "@/analytics";
 
 export interface DropdownItemProps {
   label: string;
@@ -29,7 +28,12 @@ export function DropdownItem({
       target={is_external ? "_blank" : undefined}
       variant={variant}
     >
-      <Icon className={clsx("size-5", variant === "danger" && "text-danger")} />
+      <Icon
+        className={clsx(
+          "size-5",
+          variant === "danger" ? "text-danger" : "text-accent",
+        )}
+      />
       <span className="grow">{label}</span>
       {is_external && <IconExternalLink className="size-4" />}
     </Dropdown.Item>
