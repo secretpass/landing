@@ -99,7 +99,7 @@ const ACCESS_SAMPLES: AccessSample[] = [
   },
 ];
 
-const PLAYBACK_SPEEDS = [1, 1.5, 2, 2.5, 3];
+const PLAYBACK_SPEEDS = [0.5, 1, 1.5, 2];
 
 export function QuickStartDemo() {
   const [language, setLanguage] = useState<CodeLanguage>(
@@ -107,7 +107,7 @@ export function QuickStartDemo() {
   );
   const [playback, setPlayback] = useState<{ play: boolean; speed: number }>({
     play: true,
-    speed: 2,
+    speed: 1,
   });
 
   const ref = useRef<HTMLVideoElement | null>(null);
@@ -136,116 +136,106 @@ export function QuickStartDemo() {
       className="dark text-foreground flex flex-col gap-8 w-full"
       variant="default"
     >
-      <CardContent>
-        <div className="w-full flex justify-between mb-2 items-end flex-wrap">
-          <div>
-            <Label className="text-lg">Your code stays simple</Label>
-            <br />
-            <Description className="text-sm italic">
-              If it can read environments, it can work with secretpass
-            </Description>
-          </div>
-          <Tabs
-            selectedKey={language}
-            onSelectionChange={(key) => setLanguage(key as CodeLanguage)}
-            className="overflow-x-scroll"
+      <CardContent className="flex flex-col md:flex-row gap-6 w-full items-start mt-6">
+        <div className="md:w-2/5 lg:w-1/3 2xl:w-1/4 relative">
+          <video
+            ref={ref}
+            className="h-auto w-full rounded-2xl border"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
           >
-            <Tabs.ListContainer>
-              <Tabs.List>
-                {ACCESS_SAMPLES.map((sample) => {
-                  const LanguageIcon = CodeLanguageIcon[sample.language];
-                  return (
-                    <Tabs.Tab
-                      className="h-auto py-1 gap-2"
-                      key={sample.language}
-                      id={sample.language}
-                    >
-                      <LanguageIcon className="size-5" />
-                      {sample.language}
-                      <Tabs.Indicator />
-                    </Tabs.Tab>
-                  );
-                })}
-              </Tabs.List>
-            </Tabs.ListContainer>
-          </Tabs>
+            <source src="/local-demo.mp4" type="video/mp4" />
+            <source src="/local-demo.webm" type="video/webm" />
+            Your browser does not support the video tag
+          </video>
+          <div className="w-full bottom-2 absolute flex justify-center light">
+            <Tabs
+              selectedKey={playback.speed}
+              onSelectionChange={(speed) =>
+                setPlayback((current) => ({
+                  ...current,
+                  speed: speed as number,
+                }))
+              }
+              className="overflow-x-scroll w-5/6 bottom-1 absolute"
+            >
+              <Tabs.ListContainer>
+                <Tabs.List>
+                  {PLAYBACK_SPEEDS.map((speed) => {
+                    return (
+                      <Tabs.Tab
+                        className="h-auto py-0.5"
+                        key={speed}
+                        id={speed}
+                      >
+                        {speed}x
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    );
+                  })}
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
+          </div>
         </div>
 
-        <CodeHighlighter
-          code={sample.code.join("\n")}
-          language={sample.language}
-        />
-
-        <div className="flex flex-col-reverse xl:flex-row gap-8 xl:gap-4 w-full items-start mt-6">
-          <div className="w-full xl:w-1/2">
-            <div className="w-full flex justify-between mb-2 items-end flex-wrap">
-              <div>
-                <Label className="text-lg">Install and run</Label>
-                <br />
-                <Description className="text-sm italic">
-                  Let secretpass do the heavy lifting
-                </Description>
-              </div>
+        <div className="w-full flex flex-col md:w-3/5 lg:w-2/3 2xl:w-3/4">
+          <div className="w-full flex justify-between mb-2 items-end flex-wrap">
+            <div>
+              <Label className="text-lg">Your code stays simple</Label>
+              <br />
+              <Description className="text-sm italic">
+                If it can read environments, it can work with secretpass
+              </Description>
             </div>
-            <CodeHighlighter
-              className="grow"
-              code={setup}
-              language={CodeLanguage.Shell}
-            />
-          </div>
-
-          <div className="xl:w-1/2">
-            <div className="w-full flex justify-between mb-2 items-end flex-wrap">
-              <div>
-                <Label className="text-lg">See it in action</Label>
-                <br />
-                <Description className="text-sm italic">
-                  Local secret management
-                </Description>
-              </div>
-              <Tabs
-                selectedKey={playback.speed}
-                onSelectionChange={(speed) =>
-                  setPlayback((current) => ({
-                    ...current,
-                    speed: speed as number,
-                  }))
-                }
-                className="overflow-x-scroll"
-              >
-                <Tabs.ListContainer>
-                  <Tabs.List>
-                    {PLAYBACK_SPEEDS.map((speed) => {
-                      return (
-                        <Tabs.Tab
-                          className="h-auto py-0.5"
-                          key={speed}
-                          id={speed}
-                        >
-                          {speed}x
-                          <Tabs.Indicator />
-                        </Tabs.Tab>
-                      );
-                    })}
-                  </Tabs.List>
-                </Tabs.ListContainer>
-              </Tabs>
-            </div>
-            <video
-              ref={ref}
-              className="h-auto w-full rounded-2xl border"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
+            <Tabs
+              selectedKey={language}
+              onSelectionChange={(key) => setLanguage(key as CodeLanguage)}
+              className="overflow-x-scroll"
             >
-              <source src="/local-demo.mp4" type="video/mp4" />
-              <source src="/local-demo.webm" type="video/webm" />
-              <track src="/local-demo.vtt" kind="descriptions" default />
-              Your browser does not support the video tag
-            </video>
+              <Tabs.ListContainer>
+                <Tabs.List>
+                  {ACCESS_SAMPLES.map((sample) => {
+                    const LanguageIcon = CodeLanguageIcon[sample.language];
+                    return (
+                      <Tabs.Tab
+                        className="h-auto py-1 gap-2"
+                        key={sample.language}
+                        id={sample.language}
+                      >
+                        <LanguageIcon className="size-5" />
+                        {sample.language}
+                        <Tabs.Indicator />
+                      </Tabs.Tab>
+                    );
+                  })}
+                </Tabs.List>
+              </Tabs.ListContainer>
+            </Tabs>
           </div>
+
+          <CodeHighlighter
+            code={sample.code.join("\n")}
+            language={sample.language}
+          />
+
+          <div className="w-full flex justify-between mb-2 mt-8 items-end flex-wrap">
+            <div>
+              <Label className="text-lg">Install and run</Label>
+              <br />
+              <Description className="text-sm italic">
+                Let secretpass do the heavy lifting
+              </Description>
+            </div>
+          </div>
+          <CodeHighlighter
+            className="grow"
+            code={setup}
+            language={CodeLanguage.Shell}
+          />
         </div>
       </CardContent>
     </Card>
